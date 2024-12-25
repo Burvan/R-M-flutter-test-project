@@ -1,10 +1,11 @@
 import 'package:character_list_page/src/bloc/characters_page_bloc/characters_page_bloc.dart';
 import 'package:character_list_page/src/ui/widgets/character_tile.dart';
-import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
+import 'package:navigation/navigation.dart';
 
+@RoutePage()
 class CharacterListScreen extends StatelessWidget {
   const CharacterListScreen({super.key});
 
@@ -78,15 +79,15 @@ class _CharactersPageState extends State<_CharactersPage> {
       }
       return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.indigo,
-            title: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(AppStrings.rmCharacters),
-              ],
-            ),
-          ),
+          // appBar: AppBar(
+          //   backgroundColor: AppColors.indigo,
+          //   title: const Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: <Widget>[
+          //       Text(AppStrings.rmCharacters),
+          //     ],
+          //   ),
+          // ),
           body: Stack(
             children: <Widget>[
               ListView.builder(

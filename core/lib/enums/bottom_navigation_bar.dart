@@ -1,0 +1,4 @@
+enum CustomBottomNavigationBarItem {
+  characters,
+  settings,
+}
