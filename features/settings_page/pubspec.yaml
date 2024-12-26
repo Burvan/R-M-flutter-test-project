@@ -10,11 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  auto_route: ^9.2.2
+  navigation:
+    path: ../../navigation
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  build_runner: ^2.4.14
+  auto_route_generator: ^9.0.0
 
 flutter:
 

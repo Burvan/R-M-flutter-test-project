@@ -4,8 +4,10 @@ class AppColors {
   static const Color transparent = Color.fromRGBO(0, 0, 0, 0);
   static const Color lightPink = Color.fromRGBO(255, 215, 210, 1);
   static const Color pinkSherbet = Color.fromRGBO(247, 143, 167, 1);
-  static const Color brightPink = Color.fromRGBO(252, 14, 192, 1);
-  static const Color gentlyPink = Color.fromRGBO(252, 100, 192, 1);
+  static const Color yellowGreen = Color.fromRGBO(154, 205, 50, 1);
+  static const Color lightGreen = Color.fromRGBO(170, 205, 50, 1);
+  static const Color limeGreen = Color.fromRGBO(50, 205, 50, 0.4);
+  static const Color transparentLimeGreen = Color.fromRGBO(50, 205, 50, 0.2);
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
   static const Color grey = Color.fromRGBO(220, 220, 220, 1);
   static const Color lightGrey = Color.fromRGBO(169, 169, 169, 1);

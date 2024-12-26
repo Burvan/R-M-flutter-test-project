@@ -1,10 +1,12 @@
+import 'package:character_list_page/character_list_page.dart';
 import 'package:character_list_page/src/bloc/characters_page_bloc/characters_page_bloc.dart';
 import 'package:character_list_page/src/ui/widgets/character_tile.dart';
-import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
+import 'package:navigation/navigation.dart';
 
+@RoutePage()
 class CharacterListScreen extends StatelessWidget {
   const CharacterListScreen({super.key});
 
@@ -64,29 +66,18 @@ class _CharactersPageState extends State<_CharactersPage> {
 
   @override
   Widget build(BuildContext context) {
-    final CharactersPageBloc bloc = context.read<CharactersPageBloc>();
-
     return BlocBuilder<CharactersPageBloc, CharactersPageState>(
         builder: (context, state) {
       if (state.isLoading) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (_scrollController.hasClients) {
             _scrollController.jumpTo(_scrollPosition);
-            bloc.state.copyWith(isLoading: false);
+            state.copyWith(isLoading: false);
           }
         });
       }
       return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.indigo,
-            title: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(AppStrings.rmCharacters),
-              ],
-            ),
-          ),
           body: Stack(
             children: <Widget>[
               ListView.builder(
@@ -100,6 +91,13 @@ class _CharactersPageState extends State<_CharactersPage> {
                     } else {
                       return CharacterTile(
                         character: state.characters.elementAt(index),
+                        onTap: () {
+                          context.navigateTo(
+                            DetailedCharacterRoute(
+                              character: state.characters[index],
+                            ),
+                          );
+                        },
                       );
                     }
                   }),

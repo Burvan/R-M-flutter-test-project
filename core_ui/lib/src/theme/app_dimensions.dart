@@ -7,6 +7,7 @@ class AppPadding {
   static const double padding24 = 24.0;
   static const double padding25 = 25.0;
   static const double padding40 = 40.0;
+  static const double padding50 = 50.0;
 }
 
 class AppBorderRadius {
@@ -14,6 +15,7 @@ class AppBorderRadius {
   static const double borderRadius12 = 12.0;
   static const double borderRadius18 = 18.0;
   static const double borderRadius25 = 25.0;
+  static const double borderRadius30 = 30.0;
 }
 
 class AppSize {
