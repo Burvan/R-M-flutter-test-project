@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
           backgroundColor: AppColors.yellowGreen,
           title: const Text(
             AppStrings.rmCharacters,
+            style: AppTextTheme.font22BlackGetSchwiftyBold,
           ),
           centerTitle: true,
         );

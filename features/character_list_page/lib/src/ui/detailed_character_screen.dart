@@ -19,7 +19,10 @@ class DetailedCharacterScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.yellowGreen,
           centerTitle: true,
-          title: Text(character.name),
+          title: Text(
+            character.name,
+            style: AppTextTheme.font20BlackGetSchwiftyBold,
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -88,7 +91,10 @@ class DetailedCharacterScreen extends StatelessWidget {
                 const SizedBox(height: AppSize.size10),
                 CustomRichText(
                   firstText: AppStrings.allEpisodes,
-                  secondText: character.episode.map((String episode) => episode.split('/').last).toList().toString(),
+                  secondText: character.episode
+                      .map((String episode) => episode.split('/').last)
+                      .toList()
+                      .toString(),
                   secondTextStyle: AppTextTheme.font20Black,
                 ),
                 const SizedBox(height: AppSize.size10),

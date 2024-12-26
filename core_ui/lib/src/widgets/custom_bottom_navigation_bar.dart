@@ -23,6 +23,7 @@ class AppBottomNavigationBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.padding5),
         child: GNav(
+          textStyle: AppTextTheme.font18BlackGetSchwiftyBold,
           gap: 20,
           mainAxisAlignment: MainAxisAlignment.center,
           tabBackgroundColor: AppColors.limeGreen,
