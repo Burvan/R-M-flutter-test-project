@@ -19,7 +19,7 @@ class AppBottomNavigationBar extends StatelessWidget {
         CustomBottomNavigationBarItem.values;
 
     return Container(
-      color: AppColors.transparentLimeGreen,
+      color: AppColors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.padding5),
         child: GNav(
@@ -27,7 +27,6 @@ class AppBottomNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           tabBackgroundColor: AppColors.limeGreen,
           tabBorderRadius: AppBorderRadius.borderRadius30,
-          color: AppColors.black,
           onTabChange: onTabChange,
           selectedIndex: selectedIndex,
           tabs: _bottomNavigationBarItems

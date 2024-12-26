@@ -12,6 +12,26 @@ class AppTextTheme {
     color: AppColors.lightGrey,
   );
 
+  static const TextStyle font20Grey = TextStyle(
+    fontSize: 20,
+    color: AppColors.lightGrey,
+  );
+
+  static const TextStyle font20Green = TextStyle(
+    fontSize: 20,
+    color: AppColors.yellowGreen,
+  );
+
+  static const TextStyle font20Red = TextStyle(
+    fontSize: 20,
+    color: AppColors.red,
+  );
+
+  static const TextStyle font20Black = TextStyle(
+    fontSize: 20,
+    color: AppColors.black,
+  );
+
   static const TextStyle font17 = TextStyle(
     fontSize: 17,
   );
