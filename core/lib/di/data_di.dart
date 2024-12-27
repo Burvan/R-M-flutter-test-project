@@ -1,9 +1,7 @@
 import 'package:data/mappers/mappers.dart';
-import 'package:data/repositories/character_repository_impl.dart';
 import 'package:domain/domain.dart';
 import 'package:core/di/app_di.dart';
 import 'package:data/data.dart';
-//import 'package:domain/repositories/characters_repository.dart';
 
 final DataDI dataDI = DataDI();
 
@@ -20,10 +18,26 @@ class DataDI {
       ),
     );
 
+    appLocator.registerLazySingleton<HiveProvider>(
+      () => HiveProvider(),
+    );
+
     ///UseCases
-    appLocator.registerLazySingleton(
+    appLocator.registerLazySingleton<FetchCharactersUseCase>(
       () => FetchCharactersUseCase(
         characterRepository: appLocator.get<CharacterRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<CheckThemeUseCase>(
+      () => CheckThemeUseCase(
+        settingsRepository: appLocator.get<SettingsRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<SetThemeUseCase>(
+      () => SetThemeUseCase(
+        settingsRepository: appLocator.get<SettingsRepository>(),
       ),
     );
 
@@ -32,6 +46,12 @@ class DataDI {
       () => CharacterRepositoryImpl(
         apiProvider: appLocator.get<ApiProvider>(),
         mapper: appLocator.get<MapperFactory>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<SettingsRepository>(
+      () => SettingsRepositoryImpl(
+        hiveProvider: appLocator.get<HiveProvider>(),
       ),
     );
   }

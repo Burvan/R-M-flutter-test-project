@@ -1,6 +1,6 @@
 import 'package:data/entities/character/character_entity.dart';
 import 'package:data/mappers/mappers.dart';
-import 'package:dio/dio.dart';
+import 'package:core/core.dart';
 
 class ApiProvider {
   final MapperFactory mapper;
