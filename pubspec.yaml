@@ -13,8 +13,12 @@ dependencies:
     sdk: flutter
   character_list_page:
     path: features/character_list_page
+  settings_page:
+    path: features/settings_page
   core:
     path: core
+  domain:
+    path: domain
   core_ui:
     path: core_ui
   navigation:
