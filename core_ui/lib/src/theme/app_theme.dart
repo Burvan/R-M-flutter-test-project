@@ -29,6 +29,10 @@ class AppTheme {
         thumbColor: WidgetStatePropertyAll(AppColors.lightGreen),
         trackOutlineColor: WidgetStatePropertyAll(AppColors.lightGreen),
       ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.lightGreen,
+        circularTrackColor: AppColors.white,
+      ),
       textTheme: TextTheme(
         titleLarge: AppTextTheme.font20.copyWith(
           color: AppColors.black,
@@ -64,6 +68,10 @@ class AppTheme {
       switchTheme: const SwitchThemeData(
         trackColor: WidgetStatePropertyAll(AppColors.lightGreen),
         thumbColor: WidgetStatePropertyAll(AppColors.white),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.lightGreen,
+        circularTrackColor: AppColors.white,
       ),
       textTheme: TextTheme(
         titleLarge: AppTextTheme.font20.copyWith(
