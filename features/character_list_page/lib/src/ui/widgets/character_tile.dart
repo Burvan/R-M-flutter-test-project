@@ -15,6 +15,7 @@ class CharacterTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
+    final ThemeData themeData = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -26,13 +27,15 @@ class CharacterTile extends StatelessWidget {
           Container(
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppBorderRadius.borderRadius18),
-              color: AppColors.grey,
-              boxShadow: const [
+              borderRadius: BorderRadius.circular(
+                AppBorderRadius.borderRadius18,
+              ),
+              color: themeData.primaryColor,
+              boxShadow: [
                 BoxShadow(
                   blurRadius: AppBorderRadius.borderRadius7,
-                  color: AppColors.black,
-                  offset: Offset(0, 2),
+                  color: themeData.shadowColor,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -72,9 +75,9 @@ class CharacterTile extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const Text(
+                        Text(
                           AppStrings.lastKnownLocation,
-                          style: AppTextTheme.font17Grey,
+                          style: themeData.textTheme.titleMedium,
                         ),
                         Text(
                           character.location.name,
@@ -93,7 +96,7 @@ class CharacterTile extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 borderRadius:
-                BorderRadius.circular(AppBorderRadius.borderRadius18),
+                    BorderRadius.circular(AppBorderRadius.borderRadius18),
                 onTap: onTap,
               ),
             ),

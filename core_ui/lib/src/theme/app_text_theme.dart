@@ -11,7 +11,12 @@ class AppTextTheme {
 
   static const TextStyle font17Grey = TextStyle(
     fontSize: 17,
-    color: AppColors.lightGrey,
+    color: AppColors.grey,
+  );
+
+  static const TextStyle font17LightGrey = TextStyle(
+    fontSize: 17,
+    color: AppColors.grey,
   );
 
   static const TextStyle font20Grey = TextStyle(
@@ -32,6 +37,11 @@ class AppTextTheme {
   static const TextStyle font20Black = TextStyle(
     fontSize: 20,
     color: AppColors.black,
+  );
+
+  static const TextStyle font20White = TextStyle(
+    fontSize: 20,
+    color: AppColors.white,
   );
 
   static const TextStyle font18BlackGetSchwiftyBold = TextStyle(
@@ -55,7 +65,18 @@ class AppTextTheme {
     color: AppColors.black,
   );
 
+  static const TextStyle font22WhiteGetSchwiftyBold = TextStyle(
+    fontSize: 22,
+    fontFamily: _getSchwiftyFamily,
+    fontWeight: FontWeight.bold,
+    color: AppColors.white,
+  );
+
   static const TextStyle font17 = TextStyle(
     fontSize: 17,
+  );
+
+  static const TextStyle font20 = TextStyle(
+    fontSize: 20,
   );
 }
