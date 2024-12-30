@@ -14,14 +14,14 @@ class DetailedCharacterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.yellowGreen,
           centerTitle: true,
           title: Text(
             character.name,
-            style: AppTextTheme.font20BlackGetSchwiftyBold,
           ),
         ),
         body: SingleChildScrollView(
@@ -56,13 +56,13 @@ class DetailedCharacterScreen extends StatelessWidget {
                           CustomRichText(
                             firstText: AppStrings.species,
                             secondText: character.species,
-                            secondTextStyle: AppTextTheme.font20Black,
+                            secondTextStyle: themeData.textTheme.titleLarge!,
                           ),
                           const SizedBox(height: AppSize.size5),
                           CustomRichText(
                             firstText: AppStrings.gender,
                             secondText: character.gender,
-                            secondTextStyle: AppTextTheme.font20Black,
+                            secondTextStyle: themeData.textTheme.titleLarge!,
                           ),
                         ],
                       ),
@@ -73,20 +73,20 @@ class DetailedCharacterScreen extends StatelessWidget {
                 CustomRichText(
                   firstText: AppStrings.lastKnownLocation,
                   secondText: character.location.name,
-                  secondTextStyle: AppTextTheme.font20Black,
+                  secondTextStyle: themeData.textTheme.titleLarge!,
                 ),
                 const SizedBox(height: AppSize.size10),
                 CustomRichText(
                   firstText: AppStrings.origin,
                   secondText: character.origin.name,
-                  secondTextStyle: AppTextTheme.font20Black,
+                  secondTextStyle: themeData.textTheme.titleLarge!,
                 ),
                 const SizedBox(height: AppSize.size10),
                 CustomRichText(
                   firstText: AppStrings.firstSeenIn,
                   secondText: character.episode.first.split('/').last +
                       AppStrings.episode,
-                  secondTextStyle: AppTextTheme.font20Black,
+                  secondTextStyle: themeData.textTheme.titleLarge!,
                 ),
                 const SizedBox(height: AppSize.size10),
                 CustomRichText(
@@ -95,13 +95,13 @@ class DetailedCharacterScreen extends StatelessWidget {
                       .map((String episode) => episode.split('/').last)
                       .toList()
                       .toString(),
-                  secondTextStyle: AppTextTheme.font20Black,
+                  secondTextStyle: themeData.textTheme.titleLarge!,
                 ),
                 const SizedBox(height: AppSize.size10),
                 CustomRichText(
                   firstText: AppStrings.created,
                   secondText: character.created,
-                  secondTextStyle: AppTextTheme.font20Black,
+                  secondTextStyle: themeData.textTheme.titleLarge!,
                 ),
               ],
             ),

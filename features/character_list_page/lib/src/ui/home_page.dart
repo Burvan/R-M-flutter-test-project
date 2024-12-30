@@ -18,10 +18,8 @@ class HomePage extends StatelessWidget {
       ],
       appBarBuilder: (_, TabsRouter tabsRouter) {
         return AppBar(
-          backgroundColor: AppColors.yellowGreen,
           title: const Text(
             AppStrings.rmCharacters,
-            style: AppTextTheme.font22BlackGetSchwiftyBold,
           ),
           centerTitle: true,
         );

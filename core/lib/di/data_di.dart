@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:data/mappers/mappers.dart';
 import 'package:domain/domain.dart';
 import 'package:core/di/app_di.dart';
@@ -10,6 +11,8 @@ class DataDI {
     appLocator.registerLazySingleton<MapperFactory>(
       () => MapperFactory(),
     );
+
+    await Hive.initFlutter();
 
     ///Providers
     appLocator.registerLazySingleton<ApiProvider>(
