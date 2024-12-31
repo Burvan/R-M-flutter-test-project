@@ -13,9 +13,16 @@ class CharacterRepositoryImpl implements domain.CharacterRepository {
   }) : _apiProvider = apiProvider;
 
   @override
-  Future<List<domain.Character>> fetchCharacters({int page = 0}) async {
-    final List<CharacterEntity> characters =
-        await _apiProvider.fetchCharacters(page: page);
+  Future<List<domain.Character>> fetchCharacters({
+    int page = 0,
+    String? status,
+    String? species,
+  }) async {
+    final List<CharacterEntity> characters = await _apiProvider.fetchCharacters(
+      page: page,
+      status: status,
+      species: species,
+    );
     return characters
         .map((CharacterEntity entity) =>
             mapper.characterMapper.fromEntity(entity))

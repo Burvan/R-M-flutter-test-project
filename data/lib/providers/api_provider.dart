@@ -9,10 +9,28 @@ class ApiProvider {
     required this.mapper,
   });
 
-  Future<List<CharacterEntity>> fetchCharacters({int page = 0}) async {
+  Future<List<CharacterEntity>> fetchCharacters({
+    int page = 0,
+    String? status,
+    String? species,
+  }) async {
     try {
-      final Response<Map<String, dynamic>> response = await Dio()
-          .get('https://rickandmortyapi.com/api/character/?page=$page');
+      final String url =
+          'https://rickandmortyapi.com/api/character/?page=$page';
+      final Map<String, String> queryParams = <String, String>{};
+
+      if (status != null && status.isNotEmpty) {
+        queryParams['status'] = status;
+      }
+
+      if (species != null && species.isNotEmpty) {
+        queryParams['species'] = species;
+      }
+
+      final Uri uri = Uri.parse(url).replace(queryParameters: queryParams);
+
+      final Response<Map<String, dynamic>> response =
+          await Dio().get(uri.toString());
 
       if (response != null && response.statusCode == 200) {
         final Map<String, dynamic> data = response.data!;
