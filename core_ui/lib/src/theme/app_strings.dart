@@ -13,4 +13,5 @@ class AppStrings {
   static const String created = 'Created: ';
   static const String allEpisodes = 'All episodes: ';
   static const String darkTheme = 'Dark theme';
+  static const String filters = 'Filters: ';
 }
