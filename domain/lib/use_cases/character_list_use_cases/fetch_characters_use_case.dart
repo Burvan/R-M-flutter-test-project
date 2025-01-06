@@ -1,7 +1,6 @@
 import 'package:domain/domain.dart';
 
-class FetchCharactersUseCase
-    extends FutureUseCase<List<Character>, FetchCharactersInput> {
+class FetchCharactersUseCase extends FutureUseCase<Result, Query> {
   final CharacterRepository _characterRepository;
 
   FetchCharactersUseCase({
@@ -9,23 +8,12 @@ class FetchCharactersUseCase
   }) : _characterRepository = characterRepository;
 
   @override
-  Future<List<Character>> execute(FetchCharactersInput input) {
-    return _characterRepository.fetchCharacters(
-      page: input.page,
-      status: input.status,
-      species: input.species,
+  Future<Result> execute(Query input) async {
+    return await _characterRepository.fetchCharacters(
+      Query(
+        page: input.page,
+        queryParams: input.queryParams,
+      ),
     );
   }
-}
-
-class FetchCharactersInput {
-  final int page;
-  final String? status;
-  final String? species;
-
-  FetchCharactersInput({
-    required this.page,
-    this.status,
-    this.species,
-  });
 }

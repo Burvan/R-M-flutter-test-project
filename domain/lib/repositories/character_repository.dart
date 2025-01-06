@@ -1,9 +1,5 @@
-import 'package:domain/models/character/character.dart';
+import 'package:domain/domain.dart';
 
 abstract class CharacterRepository {
-  Future<List<Character>> fetchCharacters({
-    int page = 0,
-    String? status,
-    String? species,
-  });
+  Future<Result> fetchCharacters(Query query);
 }
