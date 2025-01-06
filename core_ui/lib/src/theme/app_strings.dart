@@ -16,4 +16,9 @@ class AppStrings {
   static const String filters = 'Filters: ';
   static const String anyStatus = 'Any status';
   static const String anySpecies = 'Any species';
+
+  ///Box names
+  static const String charactersBoxName = 'characters';
+  static const String themeBoxName = 'theme';
+  static const String locationBoxName = 'location';
 }

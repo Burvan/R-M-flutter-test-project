@@ -1,17 +1,46 @@
+import 'package:core/core.dart';
 import 'package:data/entities/character/location_entity.dart';
 
+part 'character_entity.g.dart';
+
+@HiveType(typeId: 1)
 class CharacterEntity {
+  @HiveField(0)
   final int id;
+
+  @HiveField(1)
   final String name;
+
+  @HiveField(2)
   final String status;
+
+  @HiveField(3)
   final String species;
+
+  @HiveField(4)
+
+  @HiveField(5)
   final String type;
+
+  @HiveField(6)
   final String gender;
+
+  @HiveField(7)
   final LocationEntity origin;
+
+  @HiveField(8)
   final LocationEntity location;
+
+  @HiveField(9)
   final String image;
+
+  @HiveField(10)
   final List<String> episode;
+
+  @HiveField(11)
   final String url;
+
+  @HiveField(12)
   final String created;
 
   CharacterEntity({
