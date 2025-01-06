@@ -1,4 +1,7 @@
 import 'package:core/core.dart';
+import 'package:core_ui/core_ui.dart';
+import 'package:data/entities/character/character_entity.dart';
+import 'package:data/entities/character/location_entity.dart';
 import 'package:data/mappers/mappers.dart';
 import 'package:domain/domain.dart';
 import 'package:core/di/app_di.dart';
@@ -12,7 +15,32 @@ class DataDI {
       () => MapperFactory(),
     );
 
+    ///Adapters
+    appLocator.registerLazySingleton<CharacterEntityAdapter>(
+          () => CharacterEntityAdapter(),
+    );
+
+    appLocator.registerLazySingleton<LocationEntityAdapter>(
+          () => LocationEntityAdapter(),
+    );
+
+    ///Hive
     await Hive.initFlutter();
+    Hive.registerAdapter(
+      appLocator.get<CharacterEntityAdapter>(),
+    );
+    Hive.registerAdapter(
+      appLocator.get<LocationEntityAdapter>(),
+    );
+    appLocator.registerLazySingleton<Box<CharacterEntity>>(
+          () => Hive.box<CharacterEntity>(AppStrings.charactersBoxName),
+    );
+    appLocator.registerLazySingleton<Box<LocationEntity>>(
+          () => Hive.box<LocationEntity>(AppStrings.locationBoxName),
+    );
+    appLocator.registerLazySingleton<Box<String>>(
+          () => Hive.box<String>(AppStrings.themeBoxName),
+    );
 
     ///Providers
     appLocator.registerLazySingleton<ApiProvider>(
@@ -22,7 +50,11 @@ class DataDI {
     );
 
     appLocator.registerLazySingleton<HiveProvider>(
-      () => HiveProvider(),
+      () => HiveProvider(
+        charactersBox: appLocator.get<Box<CharacterEntity>>(),
+        locationBox: appLocator.get<Box<LocationEntity>>(),
+        themeBox: appLocator.get<Box<String>>(),
+      ),
     );
 
     ///UseCases
