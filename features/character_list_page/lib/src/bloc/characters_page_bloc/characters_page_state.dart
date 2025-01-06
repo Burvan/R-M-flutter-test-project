@@ -5,14 +5,16 @@ class CharactersPageState extends Equatable {
   final int currentPage;
   final bool isEndOfList;
   final bool isLoading;
-
-
+  final StatusFilter? statusFilter;
+  final SpeciesFilter? speciesFilter;
 
   const CharactersPageState({
     required this.characters,
     required this.currentPage,
     required this.isEndOfList,
     required this.isLoading,
+    this.statusFilter,
+    this.speciesFilter,
   });
 
   CharactersPageState copyWith({
@@ -20,13 +22,16 @@ class CharactersPageState extends Equatable {
     int? currentPage,
     bool? isEndOfList,
     bool? isLoading,
-
+    StatusFilter? statusFilter,
+    SpeciesFilter? speciesFilter,
   }) {
     return CharactersPageState(
       characters: characters ?? this.characters,
       isEndOfList: isEndOfList ?? this.isEndOfList,
       currentPage: currentPage ?? this.currentPage,
       isLoading: isLoading ?? this.isLoading,
+      statusFilter: statusFilter ?? this.statusFilter,
+      speciesFilter: speciesFilter ?? this.speciesFilter,
     );
   }
 
@@ -36,5 +41,7 @@ class CharactersPageState extends Equatable {
         isEndOfList,
         currentPage,
         isLoading,
+        statusFilter,
+        speciesFilter,
       ];
 }
