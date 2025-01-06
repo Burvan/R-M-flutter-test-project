@@ -39,4 +39,5 @@ class AppScale {
   static const double scaleZero3 = 0.3;
   static const double scaleOne2 = 1.2;
   static const double scaleOne5 = 1.5;
+  static const double scaleTwo7 = 2.7;
 }

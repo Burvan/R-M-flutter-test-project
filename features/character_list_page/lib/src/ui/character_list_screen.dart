@@ -1,6 +1,8 @@
 import 'package:character_list_page/character_list_page.dart';
 import 'package:character_list_page/src/bloc/characters_page_bloc/characters_page_bloc.dart';
+import 'package:character_list_page/src/ui/widgets/animated_filter_dropdown.dart';
 import 'package:character_list_page/src/ui/widgets/character_tile.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
@@ -17,7 +19,7 @@ class CharacterListScreen extends StatelessWidget {
         fetchCharactersUseCase: appLocator.get<FetchCharactersUseCase>(),
       ),
       child: const _CharactersPage(),
-    ); //BlocProvider<CharactersPageBloc>;
+    );
   }
 }
 
@@ -32,7 +34,6 @@ class _CharactersPage extends StatefulWidget {
 
 class _CharactersPageState extends State<_CharactersPage> {
   final ScrollController _scrollController = ScrollController();
-  double _scrollPosition = 0.0;
 
   @override
   void initState() {
@@ -57,7 +58,6 @@ class _CharactersPageState extends State<_CharactersPage> {
 
   void _onScroll() {
     if (_isBottom) {
-      _scrollPosition = _scrollController.position.pixels;
       context.read<CharactersPageBloc>().add(
             const FetchCharactersNextPageEvent(),
           );
@@ -68,39 +68,90 @@ class _CharactersPageState extends State<_CharactersPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CharactersPageBloc, CharactersPageState>(
         builder: (context, state) {
-      if (state.isLoading) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_scrollController.hasClients) {
-            _scrollController.jumpTo(_scrollPosition);
-            state.copyWith(isLoading: false);
-          }
-        });
-      }
       return SafeArea(
         child: Scaffold(
           body: Stack(
             children: <Widget>[
-              ListView.builder(
-                  controller: _scrollController,
-                  itemCount: state.isEndOfList
-                      ? state.characters.length
-                      : state.characters.length + 1,
-                  itemBuilder: (_, int index) {
-                    if (index >= state.characters.length) {
-                      return const SizedBox();
-                    } else {
-                      return CharacterTile(
-                        character: state.characters.elementAt(index),
-                        onTap: () {
-                          context.navigateTo(
-                            DetailedCharacterRoute(
-                              character: state.characters[index],
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  }),
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppPadding.padding10,
+                      horizontal: AppPadding.padding10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          AppStrings.filters,
+                          style: AppTextTheme.font20Bold,
+                        ),
+                        AnimatedFilterDropdown(
+                          items:
+                              StatusFilter.values.map((filter) => filter.status).toList(),
+                          hintText: AppStrings.anyStatus,
+                          initialValue: state.statusFilter?.status,
+                          onSelected: (String? value) {
+                            context.read<CharactersPageBloc>().add(
+                                  ChangeStatusFilterEvent(
+                                    value == null
+                                        ? null
+                                        : StatusFilter.values.firstWhere(
+                                            (filter) =>
+                                                filter.status == value,
+                                          ),
+                                  ),
+                                );
+                          },
+                        ),
+                        const SizedBox(width: AppSize.size5),
+                        AnimatedFilterDropdown(
+                          items: SpeciesFilter.values
+                              .map((filter) => filter.species)
+                              .toList(),
+                          hintText: AppStrings.anySpecies,
+                          initialValue: state.speciesFilter?.species,
+                          onSelected: (String? value) {
+                            context.read<CharactersPageBloc>().add(
+                                  ChangeSpeciesFilterEvent(
+                                    value == null
+                                        ? null
+                                        : SpeciesFilter.values.firstWhere(
+                                            (filter) =>
+                                            filter.species == value,
+                                          ),
+                                  ),
+                                );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: state.isEndOfList
+                            ? state.characters.length
+                            : state.characters.length + 1,
+                        itemBuilder: (_, int index) {
+                          if (index >= state.characters.length) {
+                            return const SizedBox();
+                          } else {
+                            return CharacterTile(
+                              character: state.characters.elementAt(index),
+                              onTap: () {
+                                context.navigateTo(
+                                  DetailedCharacterRoute(
+                                    character: state.characters[index],
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        }),
+                  ),
+                ],
+              ),
               Visibility(
                 visible: state.isLoading,
                 child: const Center(

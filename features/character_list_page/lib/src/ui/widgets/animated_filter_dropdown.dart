@@ -75,12 +75,12 @@ class _AnimatedFilterDropdownState extends State<AnimatedFilterDropdown>
     return OverlayEntry(
       builder: (_) => Positioned(
         left: offset.dx,
-        top: offset.dy + size.height + 8,
+        top: offset.dy + size.height,
         width: size.width,
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: const Offset(0, 8),
+          offset: const Offset(0, 0),
           child: AnimatedBuilder(
             animation: _animation,
             builder: (_, child) {
@@ -89,9 +89,13 @@ class _AnimatedFilterDropdownState extends State<AnimatedFilterDropdown>
                   heightFactor: _animation.value,
                   alignment: Alignment.topCenter,
                   child: Material(
-                    elevation: 4.0,
-                    borderRadius: BorderRadius.circular(
-                      AppBorderRadius.borderRadius12,
+                    elevation: AppSize.size5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppBorderRadius.borderRadius12,
+                      ),
+                      side: const BorderSide(
+                          color: AppColors.lightGreen, width: AppSize.size2),
                     ),
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
@@ -101,7 +105,13 @@ class _AnimatedFilterDropdownState extends State<AnimatedFilterDropdown>
                           final bool isSelected =
                               widget.items[index] == _selectedValue;
                           return ListTile(
-                            title: Text(widget.items[index] ?? ''),
+                            title: Text(
+                              widget.items[index],
+                              style: isSelected
+                                  ? AppTextTheme.font17
+                                      .copyWith(color: AppColors.lightGreen)
+                                  : AppTextTheme.font17,
+                            ),
                             onTap: () {
                               if (widget.items[index] != _selectedValue) {
                                 setState(() {
@@ -111,7 +121,6 @@ class _AnimatedFilterDropdownState extends State<AnimatedFilterDropdown>
                               }
                               toggleDropdown();
                             },
-                            tileColor: isSelected ? AppColors.lightGrey : null,
                           );
                         }),
                   ),
@@ -133,35 +142,39 @@ class _AnimatedFilterDropdownState extends State<AnimatedFilterDropdown>
       child: GestureDetector(
         onTap: () => toggleDropdown(),
         child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: mediaQueryData.size.width / 3),
-          child: IntrinsicWidth(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(AppBorderRadius.borderRadius12),
-                border: Border.all(
-                  color: AppColors.green,
-                  width: 1.0,
-                ),
+          constraints: BoxConstraints(
+            minWidth: mediaQueryData.size.width / AppScale.scaleTwo7,
+          ),
+          child: Container(
+            width: mediaQueryData.size.width / AppScale.scaleTwo7,
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(AppBorderRadius.borderRadius12),
+              border: Border.all(
+                color: AppColors.lightGreen,
+                width: AppSize.size2,
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppPadding.padding16,
-                vertical: AppPadding.padding10,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppPadding.padding16,
+              vertical: AppPadding.padding10,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
                     _selectedValue ?? widget.hintText ?? 'Select',
                     style: AppTextTheme.font17,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
-                  //const SizedBox(width: 4.0),
-                  Icon(
-                    _isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                  ),
-                ],
-              ),
+                ),
+                Icon(
+                  _isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                ),
+              ],
             ),
           ),
         ),
