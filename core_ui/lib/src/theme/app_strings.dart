@@ -16,6 +16,7 @@ class AppStrings {
   static const String filters = 'Filters: ';
   static const String anyStatus = 'Any status';
   static const String anySpecies = 'Any species';
+  static const String baseUrl = 'https://rickandmortyapi.com/api/character/';
 
   ///Box names
   static const String charactersBoxName = 'characters';
