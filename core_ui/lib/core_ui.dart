@@ -9,3 +9,4 @@ export 'src/widgets/character_image.dart';
 export 'src/widgets/selected_character_image.dart';
 export 'src/widgets/custom_rich_text.dart';
 export 'src/theme/app_theme.dart';
+export 'src/widgets/animated_text.dart';

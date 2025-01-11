@@ -9,6 +9,11 @@ class AppTextTheme {
     fontWeight: FontWeight.bold,
   );
 
+  static const TextStyle font25Bold = TextStyle(
+    fontSize: 25,
+    fontWeight: FontWeight.bold,
+  );
+
   static const TextStyle font17Grey = TextStyle(
     fontSize: 17,
     color: AppColors.grey,
