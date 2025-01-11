@@ -16,6 +16,8 @@ dependencies:
     path: ../domain
   navigation:
     path: ../navigation
+  core_ui:
+    path: ../core_ui
 
   get_it: ^8.0.2
   equatable: ^2.0.7
@@ -23,6 +25,7 @@ dependencies:
   hive_flutter: ^1.1.0
   hive: ^2.2.3
   dio: ^5.7.0
+  connectivity_plus: ^6.1.1
 
 dev_dependencies:
   flutter_test:

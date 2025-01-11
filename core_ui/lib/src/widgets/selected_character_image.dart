@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core_ui/src/widgets/custom_cached_image.dart';
 import 'package:flutter/material.dart';
+import 'package:core_ui/core_ui.dart';
 
 class SelectedCharacterImage extends StatelessWidget {
   final String imagePath;
@@ -16,7 +19,12 @@ class SelectedCharacterImage extends StatelessWidget {
       tag: imagePath,
       child: CircleAvatar(
         radius: mediaQueryData.size.width / 5,
-        foregroundImage: NetworkImage(imagePath),
+        child: ClipOval(
+          child: CustomCachedImage(
+            imagePath: imagePath,
+            imageHeight: null,
+          ),
+        ),
       ),
     );
   }

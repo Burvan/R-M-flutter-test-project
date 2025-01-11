@@ -1,3 +1,4 @@
+import 'package:core_ui/core_ui.dart';
 import 'package:data/entities/api/info_entity.dart';
 import 'package:data/entities/api/result_entity.dart';
 import 'package:data/entities/character/character_entity.dart';
@@ -16,7 +17,7 @@ class ApiProvider {
   Future<ResultEntity> fetchCharacters(Query query) async {
     try {
       const String baseUrl =
-          'https://rickandmortyapi.com/api/character/';
+          AppStrings.baseUrl;
       final Map<String, String> params = <String, String>{};
       params['page'] = query.page.toString();
 

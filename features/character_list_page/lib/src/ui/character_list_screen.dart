@@ -17,6 +17,12 @@ class CharacterListScreen extends StatelessWidget {
     return BlocProvider<CharactersPageBloc>(
       create: (_) => CharactersPageBloc(
         fetchCharactersUseCase: appLocator.get<FetchCharactersUseCase>(),
+        clearCachedCharactersUseCase:
+            appLocator.get<ClearCachedCharactersUseCase>(),
+        getCharactersFromCacheUseCase:
+            appLocator.get<GetCharactersFromCacheUseCase>(),
+        saveCharactersToCacheUseCase:
+            appLocator.get<SaveCharactersToCacheUseCase>(),
       ),
       child: const _CharactersPage(),
     );
@@ -87,8 +93,9 @@ class _CharactersPageState extends State<_CharactersPage> {
                           style: AppTextTheme.font20Bold,
                         ),
                         AnimatedFilterDropdown(
-                          items:
-                              StatusFilter.values.map((filter) => filter.status).toList(),
+                          items: StatusFilter.values
+                              .map((filter) => filter.status)
+                              .toList(),
                           hintText: AppStrings.anyStatus,
                           initialValue: state.statusFilter?.status,
                           onSelected: (String? value) {
@@ -97,8 +104,7 @@ class _CharactersPageState extends State<_CharactersPage> {
                                     value == null
                                         ? null
                                         : StatusFilter.values.firstWhere(
-                                            (filter) =>
-                                                filter.status == value,
+                                            (filter) => filter.status == value,
                                           ),
                                   ),
                                 );
@@ -117,8 +123,7 @@ class _CharactersPageState extends State<_CharactersPage> {
                                     value == null
                                         ? null
                                         : SpeciesFilter.values.firstWhere(
-                                            (filter) =>
-                                            filter.species == value,
+                                            (filter) => filter.species == value,
                                           ),
                                   ),
                                 );
@@ -128,27 +133,33 @@ class _CharactersPageState extends State<_CharactersPage> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: state.isEndOfList
-                            ? state.characters.length
-                            : state.characters.length + 1,
-                        itemBuilder: (_, int index) {
-                          if (index >= state.characters.length) {
-                            return const SizedBox();
-                          } else {
-                            return CharacterTile(
-                              character: state.characters.elementAt(index),
-                              onTap: () {
-                                context.navigateTo(
-                                  DetailedCharacterRoute(
-                                    character: state.characters[index],
-                                  ),
+                    child: (!state.isLoading && state.characters.isEmpty)
+                        ? const Center(
+                            child: AnimatedText(
+                              text: AppStrings.noSuchCharacters,
+                            ),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            itemCount: state.isEndOfList
+                                ? state.characters.length
+                                : state.characters.length + 1,
+                            itemBuilder: (_, int index) {
+                              if (index >= state.characters.length) {
+                                return const SizedBox();
+                              } else {
+                                return CharacterTile(
+                                  character: state.characters.elementAt(index),
+                                  onTap: () {
+                                    context.navigateTo(
+                                      DetailedCharacterRoute(
+                                        character: state.characters[index],
+                                      ),
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          }
-                        }),
+                              }
+                            }),
                   ),
                 ],
               ),
