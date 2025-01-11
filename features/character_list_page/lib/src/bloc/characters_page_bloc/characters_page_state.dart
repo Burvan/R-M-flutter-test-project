@@ -7,12 +7,14 @@ class CharactersPageState extends Equatable {
   final bool isLoading;
   final StatusFilter? statusFilter;
   final SpeciesFilter? speciesFilter;
+  final bool isInternetConnection;
 
   const CharactersPageState({
     required this.characters,
     required this.currentPage,
     required this.isEndOfList,
     required this.isLoading,
+    required this.isInternetConnection,
     this.statusFilter,
     this.speciesFilter,
   });
@@ -24,6 +26,7 @@ class CharactersPageState extends Equatable {
     bool? isLoading,
     StatusFilter? statusFilter,
     SpeciesFilter? speciesFilter,
+    bool? isInternetConnection,
   }) {
     return CharactersPageState(
       characters: characters ?? this.characters,
@@ -32,6 +35,7 @@ class CharactersPageState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       statusFilter: statusFilter ?? this.statusFilter,
       speciesFilter: speciesFilter ?? this.speciesFilter,
+      isInternetConnection: isInternetConnection ?? this.isInternetConnection,
     );
   }
 
@@ -43,5 +47,6 @@ class CharactersPageState extends Equatable {
         isLoading,
         statusFilter,
         speciesFilter,
+        isInternetConnection,
       ];
 }

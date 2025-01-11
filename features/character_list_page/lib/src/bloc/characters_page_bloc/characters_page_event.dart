@@ -4,6 +4,10 @@ abstract class CharactersPageEvent {
   const CharactersPageEvent();
 }
 
+class InitEvent extends CharactersPageEvent {
+  const InitEvent();
+}
+
 class FetchCharactersNextPageEvent extends CharactersPageEvent {
   const FetchCharactersNextPageEvent();
 }
@@ -19,4 +23,5 @@ class ChangeSpeciesFilterEvent extends CharactersPageEvent {
 
   const ChangeSpeciesFilterEvent(this.species);
 }
+
 
