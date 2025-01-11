@@ -13,6 +13,27 @@ class HiveProvider {
     required this.themeBox,
   });
 
+  ///Characters
+  Future<void> saveCharactersToCache(List<CharacterEntity> characters) async {
+    final Map<int, CharacterEntity> characterMap = {
+      for (var character in characters) character.id: character
+    };
+    await charactersBox.putAll(characterMap);
+  }
+
+  Future<List<CharacterEntity>> getCharactersFromCache() async {
+    final List<CharacterEntity> characters = charactersBox.values.toList();
+    return characters;
+  }
+
+  Future<void> clearCachedCharacters() async {
+    await charactersBox.clear();
+  }
+
+  Future<bool> isCharactersBoxEmpty() async {
+    return charactersBox.isEmpty;
+  }
+
   ///Settings
   Future<bool> getTheme() async {
     return themeBox.get('isDark').toString() == 'true' ? true : false;

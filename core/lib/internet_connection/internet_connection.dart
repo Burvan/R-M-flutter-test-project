@@ -15,10 +15,11 @@ class InternetConnection {
     }
 
     try {
-      final Response<Map<String, dynamic>> response = await Dio().get(AppStrings.baseUrl,
-          options: Options(
-            validateStatus: (int? status) => status! >= 200 && status < 300,
-          ));
+      final Response<Map<String, dynamic>> response =
+          await Dio().get(AppStrings.baseUrl,
+              options: Options(
+                validateStatus: (int? status) => status! >= 200 && status < 300,
+              ));
       return response.statusCode == 200;
     } catch (e) {
       return false;

@@ -4,7 +4,6 @@ import 'package:data/entities/character/character_entity.dart';
 import 'package:data/entities/character/location_entity.dart';
 import 'package:data/mappers/mappers.dart';
 import 'package:domain/domain.dart';
-import 'package:core/di/app_di.dart';
 import 'package:data/data.dart';
 
 final DataDI dataDI = DataDI();
@@ -64,6 +63,24 @@ class DataDI {
       ),
     );
 
+    appLocator.registerLazySingleton<ClearCachedCharactersUseCase>(
+          () => ClearCachedCharactersUseCase(
+        characterRepository: appLocator.get<CharacterRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<GetCharactersFromCacheUseCase>(
+          () => GetCharactersFromCacheUseCase(
+        characterRepository: appLocator.get<CharacterRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<SaveCharactersToCacheUseCase>(
+          () => SaveCharactersToCacheUseCase(
+        characterRepository: appLocator.get<CharacterRepository>(),
+      ),
+    );
+
     appLocator.registerLazySingleton<CheckThemeUseCase>(
       () => CheckThemeUseCase(
         settingsRepository: appLocator.get<SettingsRepository>(),
@@ -80,6 +97,7 @@ class DataDI {
     appLocator.registerLazySingleton<CharacterRepository>(
       () => CharacterRepositoryImpl(
         apiProvider: appLocator.get<ApiProvider>(),
+        hiveProvider: appLocator.get<HiveProvider>(),
         mapper: appLocator.get<MapperFactory>(),
       ),
     );
