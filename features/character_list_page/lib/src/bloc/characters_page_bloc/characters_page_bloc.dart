@@ -11,7 +11,6 @@ class CharactersPageBloc
   final ClearCachedCharactersUseCase _clearCachedCharactersUseCase;
   final GetCharactersFromCacheUseCase _getCharactersFromCacheUseCase;
   final SaveCharactersToCacheUseCase _saveCharactersToCacheUseCase;
-  //late StreamSubscription<List<ConnectivityResult>> _streamSubscription;
 
   CharactersPageBloc({
     required FetchCharactersUseCase fetchCharactersUseCase,
@@ -38,19 +37,8 @@ class CharactersPageBloc
     on<ChangeStatusFilterEvent>(_onChangeStatusFilter);
     on<ChangeSpeciesFilterEvent>(_onChangeSpeciesFilter);
 
-    // _streamSubscription = Connectivity()
-    //     .onConnectivityChanged
-    //     .listen((List<ConnectivityResult> result) {
-    // });
-
     add(const InitEvent());
   }
-
-  // @override
-  // Future<void> close() {
-  //   _streamSubscription.cancel();
-  //   return super.close();
-  // }
 
   Future<void> _onInit(
     InitEvent event,
