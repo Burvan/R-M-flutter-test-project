@@ -127,7 +127,7 @@ class _CharactersPageState extends State<_CharactersPage> {
                     ),
                   ),
                   Expanded(
-                    child: (state.errorMessage != null )
+                    child: (state.errorMessage != null)
                         ? Center(
                             child: AnimatedText(
                               text: state.errorMessage!,
@@ -157,12 +157,10 @@ class _CharactersPageState extends State<_CharactersPage> {
                   ),
                 ],
               ),
-              Visibility(
-                visible: state.isLoading,
-                child: const Center(
+              if (state.isLoading)
+                const Center(
                   child: CircularProgressIndicator(),
                 ),
-              ),
             ],
           ),
         ),
