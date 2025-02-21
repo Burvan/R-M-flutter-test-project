@@ -14,8 +14,5 @@ export 'repositories/settings_repository.dart';
 /// UseCases
 export 'use_cases/use_case.dart';
 export 'use_cases/character_list_use_cases/fetch_characters_use_case.dart';
-export 'use_cases/character_list_use_cases/clear_cached_characters.dart';
-export 'use_cases/character_list_use_cases/get_characters_from_cache_use_case.dart';
-export 'use_cases/character_list_use_cases/save_characters_to_cache_use_case.dart';
 export 'use_cases/settings_use_cases/check_theme_use_case.dart';
 export 'use_cases/settings_use_cases/set_theme_use_case.dart';

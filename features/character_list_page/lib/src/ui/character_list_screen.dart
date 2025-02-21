@@ -17,12 +17,6 @@ class CharacterListScreen extends StatelessWidget {
     return BlocProvider<CharactersPageBloc>(
       create: (_) => CharactersPageBloc(
         fetchCharactersUseCase: appLocator.get<FetchCharactersUseCase>(),
-        clearCachedCharactersUseCase:
-            appLocator.get<ClearCachedCharactersUseCase>(),
-        getCharactersFromCacheUseCase:
-            appLocator.get<GetCharactersFromCacheUseCase>(),
-        saveCharactersToCacheUseCase:
-            appLocator.get<SaveCharactersToCacheUseCase>(),
       ),
       child: const _CharactersPage(),
     );
@@ -133,10 +127,10 @@ class _CharactersPageState extends State<_CharactersPage> {
                     ),
                   ),
                   Expanded(
-                    child: (!state.isLoading && state.characters.isEmpty)
-                        ? const Center(
+                    child: (state.errorMessage != null )
+                        ? Center(
                             child: AnimatedText(
-                              text: AppStrings.noSuchCharacters,
+                              text: state.errorMessage!,
                             ),
                           )
                         : ListView.builder(

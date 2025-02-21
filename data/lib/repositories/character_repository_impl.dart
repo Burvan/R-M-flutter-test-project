@@ -1,4 +1,4 @@
-import 'package:core/internet_connection/internet_connection.dart';
+import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:data/entities/api/result_entity.dart';
 import 'package:data/entities/character/character_entity.dart';
@@ -8,56 +8,52 @@ import 'package:domain/domain.dart';
 class CharacterRepositoryImpl implements CharacterRepository {
   final ApiProvider _apiProvider;
   final HiveProvider _hiveProvider;
+  final InternetConnectionService _internetConnectionService;
   final MapperFactory mapper;
+  bool _isCacheCleared = false;
 
   CharacterRepositoryImpl({
     required ApiProvider apiProvider,
     required HiveProvider hiveProvider,
+    required InternetConnectionService internetConnectionService,
     required this.mapper,
   })  : _apiProvider = apiProvider,
-        _hiveProvider = hiveProvider;
+        _hiveProvider = hiveProvider,
+        _internetConnectionService = internetConnectionService;
 
   @override
   Future<Result> fetchCharacters(Query query) async {
-    final ResultEntity responseEntity =
-    await _apiProvider.fetchCharacters(query);
+    final bool isInternetConnection =
+        await _internetConnectionService.isInternetConnection();
 
-    return Result(
-      characters: responseEntity.characters
-          .map((CharacterEntity entity) =>
-          mapper.characterMapper.fromEntity(entity))
-          .toList(),
-      info: mapper.infoMapper.fromEntity(responseEntity.info),
-    );
-  }
-
-  @override
-  Future<void> clearCache() async {
-      final bool isCacheEmpty = await _hiveProvider.isCharactersBoxEmpty();
-
-      if (!isCacheEmpty) {
+    if (isInternetConnection) {
+      if (!_isCacheCleared) {
         await _hiveProvider.clearCachedCharacters();
+        _isCacheCleared = true;
       }
-  }
 
-  @override
-  Future<List<Character>> getCharactersFromCache() async {
-    final List<CharacterEntity> entityCharacters =
-        await _hiveProvider.getCharactersFromCache();
+      final ResultEntity responseEntity =
+          await _apiProvider.fetchCharacters(query);
 
-    return entityCharacters
-        .map((CharacterEntity entity) =>
-            mapper.characterMapper.fromEntity(entity))
-        .toList();
-  }
+      await _hiveProvider.saveCharactersToCache(responseEntity.characters);
 
-  @override
-  Future<void> saveCharactersToCache(List<Character> characters) async {
-    final List<CharacterEntity> entityCharacters = characters
-        .map(
-            (Character character) => mapper.characterMapper.toEntity(character))
-        .toList();
-
-    await _hiveProvider.saveCharactersToCache(entityCharacters);
+      return Result(
+        characters: responseEntity.characters
+            .map((CharacterEntity entity) =>
+                mapper.characterMapper.fromEntity(entity))
+            .toList(),
+        info: mapper.infoMapper.fromEntity(responseEntity.info),
+      );
+    } else {
+      final List<CharacterEntity> characters =
+          await _hiveProvider.getCharactersFromCache();
+      return Result(
+        characters: characters
+            .map((CharacterEntity entity) =>
+                mapper.characterMapper.fromEntity(entity))
+            .toList(),
+        info: Info(count: 0, pages: 0, next: null, prev: null),
+      );
+    }
   }
 }
