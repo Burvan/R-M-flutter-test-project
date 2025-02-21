@@ -8,9 +8,7 @@ export 'package:dio/dio.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'enums/bottom_navigation_bar.dart';
 export 'enums/filters.dart';
-export 'extensions/bottom_navigation_bar.dart';
-export 'extensions/filters.dart';
-export 'internet_connection/internet_connection.dart';
+export 'services/internet_connection_service.dart';
 
 export 'di/app_di.dart';
 export 'di/data_di.dart';

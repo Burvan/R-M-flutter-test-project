@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:core/core.dart';
+import 'package:core/errors/errors.dart';
 import 'package:domain/domain.dart';
 
 part 'characters_page_event.dart';
@@ -8,30 +9,11 @@ part 'characters_page_state.dart';
 class CharactersPageBloc
     extends Bloc<CharactersPageEvent, CharactersPageState> {
   final FetchCharactersUseCase _fetchCharactersUseCase;
-  final ClearCachedCharactersUseCase _clearCachedCharactersUseCase;
-  final GetCharactersFromCacheUseCase _getCharactersFromCacheUseCase;
-  final SaveCharactersToCacheUseCase _saveCharactersToCacheUseCase;
 
   CharactersPageBloc({
     required FetchCharactersUseCase fetchCharactersUseCase,
-    required ClearCachedCharactersUseCase clearCachedCharactersUseCase,
-    required GetCharactersFromCacheUseCase getCharactersFromCacheUseCase,
-    required SaveCharactersToCacheUseCase saveCharactersToCacheUseCase,
   })  : _fetchCharactersUseCase = fetchCharactersUseCase,
-        _clearCachedCharactersUseCase = clearCachedCharactersUseCase,
-        _getCharactersFromCacheUseCase = getCharactersFromCacheUseCase,
-        _saveCharactersToCacheUseCase = saveCharactersToCacheUseCase,
-        super(
-          const CharactersPageState(
-            characters: <Character>[],
-            currentPage: 1,
-            isEndOfList: false,
-            isLoading: false,
-            statusFilter: null,
-            speciesFilter: null,
-            isInternetConnection: true,
-          ),
-        ) {
+        super(const CharactersPageState.empty()) {
     on<InitEvent>(_onInit);
     on<FetchCharactersNextPageEvent>(_onFetchCharactersNextPage);
     on<ChangeStatusFilterEvent>(_onChangeStatusFilter);
@@ -44,14 +26,7 @@ class CharactersPageBloc
     InitEvent event,
     Emitter<CharactersPageState> emit,
   ) async {
-    if (await InternetConnection.isInternetConnection()) {
-      await _clearCachedCharactersUseCase.execute(const NoParams());
-      add(const FetchCharactersNextPageEvent());
-    } else {
-      final List<Character> characters =
-          await _getCharactersFromCacheUseCase.execute(const NoParams());
-      emit(state.copyWith(isLoading: false, characters: characters,),);
-    }
+    add(const FetchCharactersNextPageEvent());
   }
 
   Future<void> _onFetchCharactersNextPage(
@@ -61,54 +36,69 @@ class CharactersPageBloc
     if (state.isEndOfList || state.isLoading) return;
     emit(state.copyWith(isLoading: true));
 
-    final bool isInternetConnection =
-        await InternetConnection.isInternetConnection();
-
-    emit(state.copyWith(isInternetConnection: isInternetConnection));
-
-    if (isInternetConnection) {
+    try {
       final Result result = await _fetchCharactersUseCase.execute(
-        Query(page: state.currentPage, queryParams: {
-          'status': state.statusFilter?.name == StatusFilter.any.name
-              ? null
-              : state.statusFilter?.name,
-          'species': state.speciesFilter?.name == SpeciesFilter.any.name
-              ? null
-              : state.speciesFilter?.name,
-        }),
+        Query(
+          page: state.currentPage,
+          queryParams: {
+            'status': state.statusFilter == StatusFilter.any ||
+                    state.statusFilter == null
+                ? null
+                : state.statusFilter?.status,
+            'species': state.speciesFilter == SpeciesFilter.any ||
+                    state.speciesFilter == null
+                ? null
+                : state.speciesFilter?.species,
+          },
+        ),
       );
 
-      await _saveCharactersToCacheUseCase.execute(result.characters);
+      List<Character> charactersToAdd = result.characters;
+
+      if (result.info.next == null) {
+        charactersToAdd = charactersToAdd.where((character) {
+          bool statusMatch = true;
+          bool speciesMatch = true;
+          if (state.statusFilter != null &&
+              state.statusFilter != StatusFilter.any) {
+            statusMatch = character.status.toLowerCase() ==
+                state.statusFilter!.status.toLowerCase();
+          }
+          if (state.speciesFilter != null &&
+              state.speciesFilter != SpeciesFilter.any) {
+            speciesMatch = character.species.toLowerCase() ==
+                state.speciesFilter!.species.toLowerCase();
+          }
+          return statusMatch && speciesMatch;
+        }).toList();
+      }
+
+      if (charactersToAdd.isEmpty) {
+        throw const ApiException(message: 'No such characters');
+      }
 
       emit(
         state.copyWith(
           currentPage: result.info.next != null
               ? state.currentPage + 1
               : state.currentPage,
-          characters: List.of(state.characters)..addAll(result.characters),
+          characters: List.of(state.characters)..addAll(charactersToAdd),
           isLoading: false,
           isEndOfList: result.info.next == null,
         ),
       );
-    } else {
-      final List<Character> cachedCharacters =
-          await _getCharactersFromCacheUseCase.execute(const NoParams());
-
-      List<Character> filteredCachedCharacters = cachedCharacters.where((character) {
-        bool statusMatch = true;
-        bool speciesMatch = true;
-        if (state.statusFilter != null && state.statusFilter != StatusFilter.any){
-          statusMatch = character.status.toLowerCase() == state.statusFilter!.name.toLowerCase();
-        }
-        if (state.speciesFilter != null && state.speciesFilter != SpeciesFilter.any){
-          speciesMatch = character.species.toLowerCase() == state.speciesFilter!.name.toLowerCase();
-        }
-        return statusMatch && speciesMatch;
-      }).toList();
+    } on ApiException catch (_) {
       emit(
         state.copyWith(
-          characters: filteredCachedCharacters,
           isLoading: false,
+          errorMessage: 'No such characters',
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: 'An unexpected error occurred',
         ),
       );
     }

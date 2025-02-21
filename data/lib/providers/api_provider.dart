@@ -1,3 +1,4 @@
+import 'package:core/errors/errors.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:data/entities/api/info_entity.dart';
 import 'package:data/entities/api/result_entity.dart';
@@ -9,10 +10,12 @@ import 'package:domain/domain.dart';
 
 class ApiProvider {
   final MapperFactory mapper;
+  final DioErrorHandler _errorHandler;
 
   ApiProvider({
     required this.mapper,
-  });
+    required DioErrorHandler errorHandler,
+  }) : _errorHandler = errorHandler;
 
   Future<ResultEntity> fetchCharacters(Query query) async {
     try {
@@ -46,24 +49,15 @@ class ApiProvider {
             info: info,
         );
         } else {
-        print('API Error: Status code ${response?.statusCode}');
-        return ResultEntity(
-          characters: [],
-          info: InfoEntity(count: 0, pages: 0, next: null, prev: null),
+        throw ApiException(
+          message: response.statusMessage ?? 'No message',
+          statusCode: response.statusCode,
         );
       }
     } on DioException catch (e) {
-      print('Dio Error: ${e.message}');
-      return ResultEntity(
-        characters: [],
-        info: InfoEntity(count: 0, pages: 0, next: null, prev: null),
-      );
+      throw _errorHandler.handleDioError(e);
     } catch (e) {
-      print('General Error: $e');
-      return ResultEntity(
-        characters: [],
-        info: InfoEntity(count: 0, pages: 0, next: null, prev: null),
-      );
+      throw UnknownException(message: e.toString());
     }
   }
 }
