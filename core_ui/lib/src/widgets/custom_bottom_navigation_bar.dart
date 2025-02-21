@@ -16,8 +16,6 @@ class AppBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    const List<CustomBottomNavigationBarItem> _bottomNavigationBarItems =
-        CustomBottomNavigationBarItem.values;
 
     return Container(
       color: AppColors.transparent,
@@ -31,7 +29,7 @@ class AppBottomNavigationBar extends StatelessWidget {
           tabBorderRadius: AppBorderRadius.borderRadius30,
           onTabChange: onTabChange,
           selectedIndex: selectedIndex,
-          tabs: _bottomNavigationBarItems
+          tabs: CustomBottomNavigationBarItem.values
               .map(
                 (CustomBottomNavigationBarItem tab) => GButton(
                   icon: tab.icon,
