@@ -4,10 +4,14 @@ class SettingsState extends Equatable {
   final ThemeData themeData;
   final bool isDark;
 
-  SettingsState({
+  const SettingsState({
     required this.themeData,
     required this.isDark,
   });
+
+  SettingsState.empty()
+      : themeData = AppTheme.lightTheme,
+        isDark = false;
 
   SettingsState copyWith({
     ThemeData? themeData,

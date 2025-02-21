@@ -15,7 +15,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required SetThemeUseCase setThemeUseCase,
   })  : _checkThemeUseCase = checkThemeUseCase,
         _setThemeUseCase = setThemeUseCase,
-        super(SettingsState(themeData: AppTheme.lightTheme, isDark: false)) {
+        super(SettingsState.empty()) {
     on<InitSettingsEvent>(_onInitSettings);
     on<SetThemeEvent>(_onSetTheme);
 

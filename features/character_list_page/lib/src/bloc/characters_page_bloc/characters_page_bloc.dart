@@ -13,17 +13,7 @@ class CharactersPageBloc
   CharactersPageBloc({
     required FetchCharactersUseCase fetchCharactersUseCase,
   })  : _fetchCharactersUseCase = fetchCharactersUseCase,
-        super(
-          const CharactersPageState(
-            characters: <Character>[],
-            currentPage: 1,
-            isEndOfList: false,
-            isLoading: false,
-            statusFilter: null,
-            speciesFilter: null,
-            errorMessage: null,
-          ),
-        ) {
+        super(const CharactersPageState.empty()) {
     on<InitEvent>(_onInit);
     on<FetchCharactersNextPageEvent>(_onFetchCharactersNextPage);
     on<ChangeStatusFilterEvent>(_onChangeStatusFilter);
@@ -46,17 +36,17 @@ class CharactersPageBloc
     if (state.isEndOfList || state.isLoading) return;
     emit(state.copyWith(isLoading: true));
 
-    try{
+    try {
       final Result result = await _fetchCharactersUseCase.execute(
         Query(
           page: state.currentPage,
           queryParams: {
             'status': state.statusFilter == StatusFilter.any ||
-                state.statusFilter == null
+                    state.statusFilter == null
                 ? null
                 : state.statusFilter?.status,
             'species': state.speciesFilter == SpeciesFilter.any ||
-                state.speciesFilter == null
+                    state.speciesFilter == null
                 ? null
                 : state.speciesFilter?.species,
           },

@@ -19,6 +19,15 @@ class CharactersPageState extends Equatable {
     this.errorMessage,
   });
 
+  const CharactersPageState.empty()
+      : characters = const <Character>[],
+        currentPage = 1,
+        isEndOfList = false,
+        isLoading = false,
+        statusFilter = null,
+        speciesFilter = null,
+        errorMessage = null;
+
   CharactersPageState copyWith(
       {List<Character>? characters,
       int? currentPage,
