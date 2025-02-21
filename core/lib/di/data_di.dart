@@ -1,5 +1,5 @@
 import 'package:core/core.dart';
-import 'package:core_ui/core_ui.dart';
+import 'package:core/errors/errors.dart';
 import 'package:data/entities/character/character_entity.dart';
 import 'package:data/entities/character/location_entity.dart';
 import 'package:data/mappers/mappers.dart';
@@ -12,6 +12,14 @@ class DataDI {
   Future<void> setupAppLocator() async {
     appLocator.registerLazySingleton<MapperFactory>(
       () => MapperFactory(),
+    );
+
+    appLocator.registerLazySingleton<DioErrorHandler>(
+          () => DioErrorHandler(),
+    );
+
+    appLocator.registerLazySingleton<InternetConnectionService>(
+          () => InternetConnectionService(),
     );
 
     ///Adapters
@@ -31,52 +39,22 @@ class DataDI {
     Hive.registerAdapter(
       appLocator.get<LocationEntityAdapter>(),
     );
-    appLocator.registerLazySingleton<Box<CharacterEntity>>(
-          () => Hive.box<CharacterEntity>(AppStrings.charactersBoxName),
-    );
-    appLocator.registerLazySingleton<Box<LocationEntity>>(
-          () => Hive.box<LocationEntity>(AppStrings.locationBoxName),
-    );
-    appLocator.registerLazySingleton<Box<String>>(
-          () => Hive.box<String>(AppStrings.themeBoxName),
-    );
 
     ///Providers
     appLocator.registerLazySingleton<ApiProvider>(
       () => ApiProvider(
         mapper: appLocator.get<MapperFactory>(),
+        errorHandler: appLocator.get<DioErrorHandler>(),
       ),
     );
 
     appLocator.registerLazySingleton<HiveProvider>(
-      () => HiveProvider(
-        charactersBox: appLocator.get<Box<CharacterEntity>>(),
-        locationBox: appLocator.get<Box<LocationEntity>>(),
-        themeBox: appLocator.get<Box<String>>(),
-      ),
+      () => HiveProvider(),
     );
 
     ///UseCases
     appLocator.registerLazySingleton<FetchCharactersUseCase>(
       () => FetchCharactersUseCase(
-        characterRepository: appLocator.get<CharacterRepository>(),
-      ),
-    );
-
-    appLocator.registerLazySingleton<ClearCachedCharactersUseCase>(
-          () => ClearCachedCharactersUseCase(
-        characterRepository: appLocator.get<CharacterRepository>(),
-      ),
-    );
-
-    appLocator.registerLazySingleton<GetCharactersFromCacheUseCase>(
-          () => GetCharactersFromCacheUseCase(
-        characterRepository: appLocator.get<CharacterRepository>(),
-      ),
-    );
-
-    appLocator.registerLazySingleton<SaveCharactersToCacheUseCase>(
-          () => SaveCharactersToCacheUseCase(
         characterRepository: appLocator.get<CharacterRepository>(),
       ),
     );
@@ -99,6 +77,7 @@ class DataDI {
         apiProvider: appLocator.get<ApiProvider>(),
         hiveProvider: appLocator.get<HiveProvider>(),
         mapper: appLocator.get<MapperFactory>(),
+        internetConnectionService: appLocator.get<InternetConnectionService>(),
       ),
     );
 

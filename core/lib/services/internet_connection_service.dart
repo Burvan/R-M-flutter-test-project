@@ -2,10 +2,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 
-class InternetConnection {
-  InternetConnection();
+class InternetConnectionService {
+  InternetConnectionService();
 
-  static Future<bool> isInternetConnection() async {
+  Future<bool> isInternetConnection() async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
